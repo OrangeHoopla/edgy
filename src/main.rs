@@ -23,14 +23,14 @@ fn sobel(input: &ImageBuffer<Luma<u8>, Vec<u8>>) -> ImageBuffer<Luma<u8>, Vec<u8
     for i in 0..width {
         for j in 0..height {
             /* Unwrap those loops! */
-            let val0 = input.get_pixel(i, j).data[0] as i32;
-            let val1 = input.get_pixel(i + 1 , j).data[0] as i32;
-            let val2 = input.get_pixel(i + 2, j).data[0] as i32;
-            let val3 = input.get_pixel(i, j + 1).data[0] as i32;
-            let val5 = input.get_pixel(i + 2, j + 1).data[0] as i32;
-            let val6 = input.get_pixel(i, j + 2).data[0] as i32;
-            let val7 = input.get_pixel(i + 1, j + 2).data[0] as i32;
-            let val8 = input.get_pixel(i + 2, j + 2).data[0] as i32;
+            let val0 = input.get_pixel(i, j)[0] as i32;
+            let val1 = input.get_pixel(i + 1 , j)[0] as i32 ;
+            let val2 = input.get_pixel(i + 2, j)[0] as i32;
+            let val3 = input.get_pixel(i, j + 1)[0] as i32;
+            let val5 = input.get_pixel(i + 2, j + 1)[0] as i32;
+            let val6 = input.get_pixel(i, j + 2)[0] as i32;
+            let val7 = input.get_pixel(i + 1, j + 2)[0] as i32;
+            let val8 = input.get_pixel(i + 2, j + 2)[0] as i32;
             /* Apply Sobel kernels */
             let gx = (-1 * val0) + (-2 * val3) + (-1 * val6) + val2 + (2 * val5) + val8;
             let gy = (-1 * val0) + (-2 * val1) + (-1 * val2) + val6 + (2 * val7) + val8;
@@ -60,7 +60,7 @@ fn process_frame(path: String, output_path: String, blur_modifier: i32)
     let (width, height) = source.dimensions();
     let sigma = sigma(width, height, blur_modifier);
     let gaussed = source.blur(sigma);
-    let gray = gaussed.to_luma();
+    let gray = gaussed.to_luma8();
     let sobeled = sobel(&gray);
     sobeled.save(output_path).unwrap();
 }
